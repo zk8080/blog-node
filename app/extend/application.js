@@ -8,8 +8,8 @@ module.exports = {
       return null;
     }
     schema.set('versionKey', false);
-    schema.set('toObject', { getters: true, virtuals: false });
-    schema.set('toJSON', { getters: true, virtuals: false });
+    schema.set('toObject', { getters: true, virtuals: true });
+    schema.set('toJSON', { getters: true, virtuals: true });
     schema.add({
       // 创建日期
       createdAt: { type: Date, default: Date.now, get: v => moment(v).format('YYYY-MM-DD HH:mm') },

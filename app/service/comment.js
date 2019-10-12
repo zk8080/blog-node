@@ -1,11 +1,21 @@
 'use strict';
 
-const Service = require('egg').Service;
+// const Service = require('egg').Service;
+const BaseService = require('../core/base_service');
 
-class CommentService extends Service {
+class CommentService extends BaseService {
+  get model() {
+    return this.ctx.model.Comment;
+  }
   async getCommentList(obj) {
-    const comment = await this.ctx.model.Comment.find(obj, { __v: 0 });
-    return { comment };
+    const { page = 1, limit = 10, ...rest } = obj;
+    const option = {
+      select: { __v: 0 },
+      page,
+      limit,
+    };
+    const comment = await this.getPageList(rest, option);
+    return comment;
   }
 
   async addComment(obj) {

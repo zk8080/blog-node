@@ -8,5 +8,5 @@ module.exports = app => {
     create_time: { type: Date, default: Date.now },
   }, { autoIndex: true });
 
-  return mongoose.model('Category', CategorySchema);
+  return mongoose.model('Category', app.initSchema(CategorySchema, { paginate: true }));
 };

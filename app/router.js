@@ -5,10 +5,8 @@
  */
 module.exports = app => {
   const { router, controller } = app;
-  router.get('/', controller.home.index);
   router.get('/user', controller.user.getUser);
   router.post('/addUser', controller.user.addUser);
-  router.post('/editUser', controller.user.editUser);
   router.get('/deleteUser', controller.user.deleteUser);
 
   // 标签相关

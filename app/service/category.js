@@ -1,30 +1,18 @@
 'use strict';
 
-const Service = require('egg').Service;
+// const Service = require('egg').Service;
+const BaseService = require('../core/base_service');
 
-class CategoryService extends Service {
+class CategoryService extends BaseService {
   async getCategoryList(obj) {
-    const category = await this.ctx.model.Category.find(obj, { __v: 0 });
-    return { category };
-  }
-
-  async addCategory(obj) {
-    const category = await this.ctx.model.Category.create(obj);
-    console.log(category, '----category---');
-    return {
-      code: '200',
-      message: '添加成功！',
+    const { page = 1, limit = 10, ...rest } = obj;
+    const option = {
+      select: { __v: 0 },
+      page,
+      limit,
     };
-  }
-
-  async removeCategory(obj) {
-    console.log(obj._id, '------obj._id----');
-    const category = await this.ctx.model.Category.remove({ _id: { $in: obj._id } });
-    console.log(category, '----category---');
-    return {
-      code: '200',
-      message: '删除成功！',
-    };
+    const category = await this.getPageList(rest, option);
+    return category;
   }
 }
 

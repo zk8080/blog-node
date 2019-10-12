@@ -8,5 +8,5 @@ module.exports = app => {
     create_time: { type: Date, default: Date.now },
   }, { autoIndex: true });
 
-  return mongoose.model('Tag', TagSchema);
+  return mongoose.model('Tag', app.initSchema(TagSchema, { paginate: true }));
 };

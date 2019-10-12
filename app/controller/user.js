@@ -8,28 +8,37 @@ class UserController extends Controller {
     console.log(ctx.query, '-------query------');
     const userList = await ctx.service.user.getUserList(ctx.query);
     // ctx.body = userList;
-    ctx.success(userList);
+    if (userList) {
+      ctx.success(userList);
+    } else {
+      ctx.fail(undefined, '查询失败！');
+    }
   }
 
   async addUser() {
     const ctx = this.ctx;
-    console.log(ctx.request.body, '--------body--------');
-    const result = await ctx.service.user.addUser(ctx.request.body);
-    ctx.body = result;
-  }
-
-  async editUser() {
-    const ctx = this.ctx;
-    console.log(ctx.request.body, '--------body--------');
-    const result = await ctx.service.user.editUser(ctx.request.body);
-    ctx.body = result;
+    const { userName } = ctx.request.body;
+    const user = await ctx.service.user.getItem({ userName });
+    if (user) {
+      return ctx.fail(undefined, '该用户已存在！');
+    }
+    const result = await ctx.service.user.create(ctx.request.body);
+    if (result) {
+      ctx.success(null, '新增成功！');
+    } else {
+      ctx.fail(undefined, '新增失败！');
+    }
   }
 
   async deleteUser() {
     const ctx = this.ctx;
-    console.log(ctx.query, '--------body--------');
-    const result = await ctx.service.user.removeUser(ctx.query);
-    ctx.body = result;
+    const result = await ctx.service.user.deleteItemById(ctx.query.id);
+    console.log(result, '-----result----');
+    if (result) {
+      ctx.success(null, '删除成功！');
+    } else {
+      ctx.fail(undefined, '删除失败！');
+    }
   }
 }
 

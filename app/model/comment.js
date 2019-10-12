@@ -10,5 +10,5 @@ module.exports = app => {
     create_time: { type: Date, default: Date.now },
   }, { autoIndex: true });
 
-  return mongoose.model('Comment', CommentSchema);
+  return mongoose.model('Comment', app.initSchema(CommentSchema, { paginate: true }));
 };
